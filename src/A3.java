@@ -15,7 +15,7 @@ public class A3
 
     public void run(String[] args)
     {
-        FixedCPU fixed = new FixedCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
+        FixedCPU fixed = new FixedCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]), args.length - 2);
         fixed.readProcesses(args);
         fixed.run();
         // cpu.runVariable();
