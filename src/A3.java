@@ -15,7 +15,11 @@ public class A3
 
     public void run(String[] args)
     {
-        
+        CPU cpu = new CPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
+        cpu.readProcesses(args);
+        // cpu.runFixed();
+        // cpu.runVariable();
+        System.out.println(cpu);
     }
 
     private static boolean validArgs(String[] args)
@@ -25,7 +29,7 @@ public class A3
             return false;
         }
 
-        for (int i = 2; i < args.length - 2; i++)
+        for (int i = 2; i < args.length; i++)
         {
             File f = new File(args[i]);
             if (!f.exists())
