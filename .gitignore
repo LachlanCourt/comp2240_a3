@@ -1,0 +1,6 @@
+*.pdf
+*.class
+.idea
+out
+*.iml
+format.sh
