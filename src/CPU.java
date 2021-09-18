@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CPU
+public abstract class CPU
 {
     protected ArrayList<Process> unfinishedProcesses;
     protected ArrayList<Process> readyQueue;
@@ -11,12 +11,15 @@ public class CPU
     protected int quanta;
 
 
-    public CPU(int frames, int quanta)
+    public CPU(int quanta_)
     {
         unfinishedProcesses = new ArrayList<Process>();
         readyQueue = new ArrayList<Process>();
         totalProcesses = new ArrayList<Process>();
+        quanta = quanta_;
     }
+
+    public abstract void run();
 
     public void readProcesses(String[] args)
     {
