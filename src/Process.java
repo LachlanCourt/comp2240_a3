@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Process
 {
-    ArrayList<Integer> pageSequence;
+    ArrayList<Page> pageSequence;
 
-    public Process(ArrayList<Integer> pageSequence_)
+    public Process(ArrayList<Page> pageSequence_)
     {
         pageSequence = pageSequence_;
     }

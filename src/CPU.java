@@ -25,7 +25,7 @@ public abstract class CPU
     {
         for (int i = 2; i < args.length; i++)
         {
-            ArrayList<Integer> pageSequence = readProcessFile(args[i]);
+            ArrayList<Page> pageSequence = readProcessFile(args[i]);
             Process temp = new Process(pageSequence);
             unfinishedProcesses.add(temp);
             readyQueue.add(temp);
@@ -33,9 +33,9 @@ public abstract class CPU
         }
     }
 
-    private ArrayList<Integer> readProcessFile(String filename)
+    private ArrayList<Page> readProcessFile(String filename)
     {
-        ArrayList<Integer> pageSequence = new ArrayList<Integer>();
+        ArrayList<Page> pageSequence = new ArrayList<Page>();
 
         Scanner input = null;
         try
@@ -53,7 +53,7 @@ public abstract class CPU
             String data = input.next();
             try
             {
-                pageSequence.add(Integer.valueOf(data));
+                pageSequence.add(new Page(Integer.valueOf(data), filename));
             }
             catch (Exception e)
             {
