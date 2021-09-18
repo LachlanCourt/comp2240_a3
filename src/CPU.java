@@ -16,7 +16,6 @@ public class CPU
         unfinishedProcesses = new ArrayList<Process>();
         readyQueue = new ArrayList<Process>();
         totalProcesses = new ArrayList<Process>();
-
     }
 
     public void readProcesses(String[] args)
