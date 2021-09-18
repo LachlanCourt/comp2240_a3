@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make
-      run: echo cd src && javac filename.java
+      run: cd src && javac A3.java
     - name: run
-      run: echo cd src && java filename
+      run: cd src && java A3 30 3 data/S1/process1.txt data/S1/process2.txt data/S1/process3.txt data/S1/process4.txt
