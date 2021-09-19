@@ -42,7 +42,7 @@ public abstract class CPU
             currentProcess = readyQueue.get(0);
 
             // Check if page exists
-            if (!checkMemoryForPage())
+            if (!checkMemoryForPage(currentProcess))
             {
                 // if no, block and pass to IO
                 blockCurrentProcess();
@@ -64,7 +64,7 @@ public abstract class CPU
                     {
                         break;
                     }
-                    if (!checkMemoryForPage())
+                    if (!checkMemoryForPage(currentProcess))
                     {
                         // if no, block and pass to IO
                         blockCurrentProcess();
@@ -98,7 +98,7 @@ public abstract class CPU
 
     protected abstract void scanBlockedProcesses();
 
-    protected abstract boolean checkMemoryForPage();
+    protected abstract boolean checkMemoryForPage(Process p);
 
     protected abstract void addToMemory();
 
