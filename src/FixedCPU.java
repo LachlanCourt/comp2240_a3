@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class FixedCPU extends CPU
 {
@@ -42,11 +41,10 @@ public class FixedCPU extends CPU
 
     @Override protected boolean checkMemoryForPage(Process p)
     {
-        HashMap<Integer, Page> memorySector = mainMemory.get(p.getProcessID());
         int requiredPage = p.getRequiredPageID();
-        if (memorySector.containsKey(requiredPage))
+        if (mainMemory.get(p.getProcessID()).containsKey(requiredPage))
         {
-            memorySector.get(requiredPage).updateLastUsed(currentTime);
+            mainMemory.get(p.getProcessID()).get(requiredPage).updateLastUsed(currentTime);
             return true;
         }
         return false;
@@ -58,17 +56,15 @@ public class FixedCPU extends CPU
         if (mainMemory.get(page.getProcessID()).size() == framesPerProcess)
         {
             // Remove if necessary
-            int oldestPageIndex = 0;
-            int oldestPageTime = 0;
-            for (int i = 0; i < framesPerProcess; i++)
+            Map.Entry<Integer, Page> oldestPage = null;
+            for (Map.Entry<Integer, Page> entry : mainMemory.get(page.getProcessID()).entrySet())
             {
-                if (mainMemory.get(page.getProcessID()).get(i).getLastUsed() < oldestPageTime)
+                if (oldestPage == null || entry.getValue().getLastUsed() < oldestPage.getValue().getLastUsed())
                 {
-                    oldestPageIndex = i;
-                    oldestPageTime = mainMemory.get(page.getProcessID()).get(i).getLastUsed();
+                    oldestPage = entry;
                 }
             }
-            mainMemory.get(page.getProcessID()).remove(oldestPageIndex);
+            mainMemory.get(page.getProcessID()).remove(oldestPage);
         }
         // Add
         mainMemory.get(page.getProcessID()).put(page.getPageID(), page);

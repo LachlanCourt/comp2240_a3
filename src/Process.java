@@ -9,6 +9,7 @@ public class Process
     private int currentInstruction;
     private ArrayList<Integer> pageFaults;
     private String processID;
+    private int finishTime;
 
 
     public Process(ArrayList<Integer> pageSequence_, String processID_)
@@ -18,6 +19,7 @@ public class Process
         state = ProcessState.READY;
         currentInstruction = 0;
         pageFaults = new ArrayList<Integer>();
+        finishTime = -1;
     }
 
     public int getRequiredPageID()
@@ -40,11 +42,18 @@ public class Process
         this.state = state_;
     }
 
-    public void tick() {}
+    public void tick(int currentTime)
+    {
+        currentInstruction++;
+        if (currentInstruction == pageSequence.size() - 1)
+        {
+            finishTime = currentTime;
+        }
+    }
 
     public boolean isFinished()
     {
-        return true;
+        return finishTime >= 0;
     }
 
     public void issueFault(int currentTime) {}

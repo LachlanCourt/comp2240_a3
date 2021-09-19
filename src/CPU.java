@@ -20,7 +20,7 @@ public abstract class CPU
         blockedQueue = new ArrayList<Process>();
         totalProcesses = new ArrayList<Process>();
         finishedProcesses = new ArrayList<Process>();
-        io = new IOHandler();
+        io = new IOHandler(this);
         quanta = quanta_;
         currentTime = 0;
     }
@@ -35,45 +35,38 @@ public abstract class CPU
             while (readyQueue.size() == 0)
             {
                 currentTime++;
-                io.tick();
+                io.tick(currentTime);
                 scanBlockedProcesses();
             }
             // Take from ready
             currentProcess = readyQueue.get(0);
 
-            // Check if page exists
-            if (!checkMemoryForPage(currentProcess))
+            // if yes, loop quanta steps
+            for (int i = 0; i < quanta; i++)
             {
-                // if no, block and pass to IO
-                blockCurrentProcess();
-                io.fetchFromMemory(currentProcess.getProcessID(), currentProcess.getRequiredPageID());
-            }
-            else
-            {
-                // if yes, loop quanta steps
-                for (int i = 0; i < quanta; i++)
+                if (!checkMemoryForPage(currentProcess))
                 {
-                    //      increment time
-                    //      Tick IO
-                    //      Move blocked to ready
-                    currentTime++;
-                    io.tick();
-                    scanBlockedProcesses();
-                    //      Check if complete, if yes break
-                    currentProcess.tick();
-                    if (currentProcess.isFinished())
-                    {
-                        break;
-                    }
-                    if (!checkMemoryForPage(currentProcess))
-                    {
-                        // if no, block and pass to IO
-                        blockCurrentProcess();
-                        io.fetchFromMemory(currentProcess.getProcessID(), currentProcess.getRequiredPageID());
-                        break;
-                    }
-                    //      if yes, continue
+                    // if no, block and pass to IO
+                    blockCurrentProcess();
+                    io.fetchFromMemory(currentProcess.getProcessID(), currentProcess.getRequiredPageID());
+                    break;
                 }
+                //      increment time
+                //      Tick IO
+                //      Move blocked to ready
+                currentTime++;
+                io.tick(currentTime);
+                scanBlockedProcesses();
+                // Check if complete, if yes break
+                currentProcess.tick(currentTime);
+                if (currentProcess.isFinished())
+                {
+                    break;
+                }
+                //      if yes, continue
+            }
+            if (currentProcess.getState() != Process.ProcessState.BLOCKED)
+            {
                 // if complete, move between queues
                 // if not, put back on ready queue
                 readyQueue.remove(0);
