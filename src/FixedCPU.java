@@ -11,6 +11,7 @@ public class FixedCPU extends CPU
 
         framesPerProcess = frameCount / processCount;
         mainMemory = new HashMap<String, HashMap<Integer, Page>>();
+        name = "Fixed-Local";
     }
 
     @Override public void init()

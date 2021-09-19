@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public abstract class CPU
@@ -11,6 +12,7 @@ public abstract class CPU
     protected ArrayList<Process> finishedProcesses;
     protected int quanta;
     protected int currentTime;
+    protected String name = "";
     private IOHandler io;
     private Process currentProcess;
 
@@ -102,7 +104,7 @@ public abstract class CPU
         for (int i = 2; i < args.length; i++)
         {
             ArrayList<Integer> pageSequence = readProcessFile(args[i]);
-            Process temp = new Process(pageSequence, args[i]);
+            Process temp = new Process(pageSequence, args[i], i - 1);
             readyQueue.add(temp);
             totalProcesses.add(temp);
         }
@@ -147,7 +149,20 @@ public abstract class CPU
 
     @Override public String toString()
     {
-        String out = "";
+        String out = "FIFO - " + name + " Replacement:\nPID  Process Name      Turnaround Time  # Faults  Fault Times\n";
+        Collections.sort(finishedProcesses, (Process a, Process b) -> {
+           return a.getIntID() < b.getIntID() ? -1 : 1;
+        });
+        for (Process p : finishedProcesses)
+        {
+            String pid = String.valueOf(p.getIntID());
+            String pname = p.getProcessID();
+            String tt = String.valueOf(p.getFinishTime());
+            String faults = String.valueOf(p.getTotalFaults());
+            String faultTimes = p.getFaults();
+            out += String.format("%-5s%-18s%-17s%-10s%-11s", pid, pname, tt, faults, faultTimes);
+            out += "\n";
+        }
         return out;
     }
 }
