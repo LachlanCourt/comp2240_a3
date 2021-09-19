@@ -91,9 +91,25 @@ public abstract class CPU
         blockedQueue.add(currentProcess);
     }
 
-    protected abstract void init();
+    protected void scanBlockedProcesses()
+    {
+        ArrayList<Process> toMove = new ArrayList<Process>();
+        for (Process p : blockedQueue)
+        {
+            if (checkMemoryForPage(p))
+            {
+                toMove.add(p);
+            }
+        }
+        for (Process p : toMove)
+        {
+            blockedQueue.remove(p);
+            p.setState(Process.ProcessState.READY);
+            readyQueue.add(p);
+        }
+    }
 
-    protected abstract void scanBlockedProcesses();
+    protected abstract void init();
 
     protected abstract boolean checkMemoryForPage(Process p);
 
