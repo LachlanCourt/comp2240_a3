@@ -35,7 +35,7 @@ public abstract class CPU
             while (readyQueue.size() == 0)
             {
                 currentTime++;
-                io.tick(currentTime);
+                io.tick();
                 scanBlockedProcesses();
             }
             // Take from ready
@@ -55,7 +55,7 @@ public abstract class CPU
                 //      Tick IO
                 //      Move blocked to ready
                 currentTime++;
-                io.tick(currentTime);
+                io.tick();
                 scanBlockedProcesses();
                 // Check if complete, if yes break
                 currentProcess.tick(currentTime);
