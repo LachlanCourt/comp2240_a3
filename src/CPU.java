@@ -89,6 +89,7 @@ public abstract class CPU
                 if (currentProcess.isFinished())
                 {
                     finishedProcesses.add(currentProcess);
+                    clearAssociatedMemory(currentProcess);
                 }
                 else
                 {
@@ -97,6 +98,12 @@ public abstract class CPU
             }
         }
     }
+
+    /**
+     * For handle the clearing of the memory after a process has completed
+     * @param currentProcess that just finished
+     */
+    protected abstract void clearAssociatedMemory(Process currentProcess);
 
     /**
      * Handles blocking the current process if waiting for io

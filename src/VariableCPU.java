@@ -7,6 +7,7 @@
  ****    system
  *******************************************************************************/
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,5 +64,24 @@ public class VariableCPU extends CPU
         }
         // Add the new page to the map
         mainMemory.put(page.getProcessID() + page.getPageID(), page);
+    }
+
+    @Override protected void clearAssociatedMemory(Process currentProcess)
+    {
+        // Initialise a new list to store map entries that need to be removed to avoid concurrent modification
+        ArrayList<Map.Entry<String, Page>> toRemove = new ArrayList<Map.Entry<String, Page>>();
+        // Iterate through the hash map to find pages that are associated with the process that just finished
+        for (Map.Entry<String, Page> entry : mainMemory.entrySet())
+        {
+            if (entry.getValue().getProcessID().equals(currentProcess.getProcessID()))
+            {
+                toRemove.add(entry);
+            }
+        }
+        // Remove each entry from the map
+        for (Map.Entry<String, Page> entry : toRemove)
+        {
+            mainMemory.remove(entry.getKey());
+        }
     }
 }

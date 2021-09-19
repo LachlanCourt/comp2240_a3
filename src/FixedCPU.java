@@ -69,4 +69,10 @@ public class FixedCPU extends CPU
         // Add the new page to the map
         mainMemory.get(page.getProcessID()).put(page.getPageID(), page);
     }
+
+    @Override protected void clearAssociatedMemory(Process currentProcess)
+    {
+        // Delete the map that is relevant for this process
+        mainMemory.remove(currentProcess.getProcessID());
+    }
 }
