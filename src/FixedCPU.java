@@ -2,19 +2,33 @@ import java.util.ArrayList;
 
 public class FixedCPU extends CPU
 {
-    private ArrayList<ArrayList<Page>> frames;
+    private ArrayList<ArrayList<Page>> mainMemory;
     private final int framesPerProcess;
 
-    public FixedCPU(int frameCount, int quanta_, int processCount) {
+    public FixedCPU(int frameCount, int quanta_, int processCount)
+    {
         super(quanta_);
 
         framesPerProcess = frameCount / processCount;
-        frames = new ArrayList<ArrayList<Page>>();
+        mainMemory = new ArrayList<ArrayList<Page>>();
         for (int i = 0; i < processCount; i++)
         {
-            frames.add(new ArrayList<Page>());
+            mainMemory.add(new ArrayList<Page>());
         }
     }
 
+    @Override
+    protected void scanBlockedProcesses() {
 
+    }
+
+    @Override
+    protected boolean checkMemoryForPage() {
+        return true;
+    }
+
+    @Override
+    protected void addToMemory() {
+
+    }
 }

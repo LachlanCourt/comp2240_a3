@@ -5,45 +5,103 @@ import java.util.Scanner;
 
 public abstract class CPU
 {
-    protected ArrayList<Process> unfinishedProcesses;
     protected ArrayList<Process> readyQueue;
     protected ArrayList<Process> blockedQueue;
     protected ArrayList<Process> totalProcesses;
     protected ArrayList<Process> finishedProcesses;
     protected ArrayList<Integer> pageFaults;
     protected int quanta;
+    private IOHandler io;
+    private Process currentProcess;
+    private int currentTime;
 
     public CPU(int quanta_)
     {
-        unfinishedProcesses = new ArrayList<Process>();
         readyQueue = new ArrayList<Process>();
         blockedQueue = new ArrayList<Process>();
         totalProcesses = new ArrayList<Process>();
         finishedProcesses = new ArrayList<Process>();
         pageFaults = new ArrayList<Integer>();
         quanta = quanta_;
+        currentTime = 0;
     }
 
-    public void run() {
+    public void run()
+    {
         // Create IOHandler
+        io = new IOHandler();
+        System.out.println(readyQueue.size());
         // Loop until complete
+        while (finishedProcesses.size() != totalProcesses.size()) {
+            // If all processes are blocked, increment time and tick IO
+            while (readyQueue.size() == 0)
+            {
+                //System.out.println("a");
+                currentTime++;
+                io.tick();
+                scanBlockedProcesses();
+            }
+            // Take from ready
+            currentProcess = readyQueue.get(0);
 
-        // Move blocked to ready
-        // Take from ready
-        // Check if page exists
-        // if no, block and pass to IO
-        // if yes, loop 3 steps
-        //      increment time
-        //      Tick IO
-        //      Move blocked to ready
-        //      Check if complete, if yes break
-        //      Check if page exists
-        //      if no, block and pass to IO and break
-        //      if yes, continue
-        // if complete, move between queues
-        // if not, put back on ready queue or
+            // Check if page exists
+            if (!checkMemoryForPage())
+            {
+                // if no, block and pass to IO
+                blockCurrentProcess();
+                io.fetchFromMemory(currentProcess.getPage());
+            }
+            else {
+                // if yes, loop quanta steps
+                for (int i = 0; i < quanta; i++) {
+                    //      increment time
+                    //      Tick IO
+                    //      Move blocked to ready
+                    currentTime++;
+                    io.tick();
+                    scanBlockedProcesses();
+                    //      Check if complete, if yes break
+                    currentProcess.tick();
+                    if (currentProcess.isFinished())
+                    {
+                        break;
+                    }
+                    if (!checkMemoryForPage())
+                    {
+                        // if no, block and pass to IO
+                        blockCurrentProcess();
+                        io.fetchFromMemory(currentProcess.getPage());
+                        break;
+                    }
+                    //      if yes, continue
+                }
+            }
+            // if complete, move between queues
+            // if not, put back on ready queue
+            readyQueue.remove(0);
+            if (currentProcess.isFinished())
+            {
+                finishedProcesses.add(currentProcess);
+            }
+            else
+            {
+                readyQueue.add(currentProcess);
+            }
 
+        }
     }
+
+    private void blockCurrentProcess() {
+        currentProcess.setState(Process.ProcessState.BLOCKED);
+        readyQueue.remove(0);
+        blockedQueue.add(currentProcess);
+    }
+
+    protected abstract void scanBlockedProcesses();
+
+    protected abstract boolean checkMemoryForPage();
+
+    protected abstract void addToMemory();
 
     public void readProcesses(String[] args)
     {
@@ -51,7 +109,6 @@ public abstract class CPU
         {
             ArrayList<Page> pageSequence = readProcessFile(args[i]);
             Process temp = new Process(pageSequence);
-            unfinishedProcesses.add(temp);
             readyQueue.add(temp);
             totalProcesses.add(temp);
         }
