@@ -15,11 +15,11 @@ public class A3
 
     public void run(String[] args)
     {
-        CPU cpu = new CPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
-        cpu.readProcesses(args);
-        // cpu.runFixed();
+        FixedCPU fixed = new FixedCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]), args.length - 2);
+        fixed.readProcesses(args);
+        fixed.run();
         // cpu.runVariable();
-        System.out.println(cpu);
+        System.out.println(fixed);
     }
 
     private static boolean validArgs(String[] args)
@@ -37,7 +37,6 @@ public class A3
                 return false;
             }
         }
-
         try
         {
             Integer.valueOf(args[0]);

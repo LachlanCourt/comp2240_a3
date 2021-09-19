@@ -4,3 +4,4 @@
 out
 *.iml
 format.sh
+src/*.txt
