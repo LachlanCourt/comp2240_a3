@@ -48,7 +48,8 @@ public class IOHandler
      */
     public void tick()
     {
-        // Create a new list to store any pages whose io request has been completed and needs to be moved to the ready queue
+        // Create a new list to store any pages whose io request has been completed and needs to be moved to the ready
+        // queue
         ArrayList<Page> readyPages = new ArrayList<Page>();
         // Loop through the currently running io requests
         for (Map.Entry<Page, Integer> entry : fetching.entrySet())

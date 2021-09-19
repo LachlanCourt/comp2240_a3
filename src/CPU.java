@@ -170,8 +170,7 @@ public abstract class CPU
             // Read the page sequence in from the file
             ArrayList<Integer> pageSequence = readProcessFile(args[i]);
             // Give a unique ID to each process, starting from i - 1 which will start at 1
-            Process temp =
-                new Process(pageSequence, args[i], i - 1);
+            Process temp = new Process(pageSequence, args[i], i - 1);
             // Add to relevant queues
             readyQueue.add(temp);
             totalProcesses.add(temp);
