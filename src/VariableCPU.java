@@ -15,25 +15,23 @@ public class VariableCPU extends CPU
         name = "Variable-Global";
     }
 
-    @Override
-    protected void init() {
+    @Override protected void init()
+    {
         // No further initialisation required after file read for variable :)
     }
 
-    @Override
-    protected boolean checkMemoryForPage(Process p)
+    @Override protected boolean checkMemoryForPage(Process p)
     {
         int requiredPage = p.getRequiredPageID();
-        if (mainMemory.containsKey(p.getProcessID()+requiredPage))
+        if (mainMemory.containsKey(p.getProcessID() + requiredPage))
         {
-            mainMemory.get(p.getProcessID()+requiredPage).updateLastUsed(currentTime);
+            mainMemory.get(p.getProcessID() + requiredPage).updateLastUsed(currentTime);
             return true;
         }
         return false;
     }
 
-    @Override
-    protected void addToMemory(Page page)
+    @Override protected void addToMemory(Page page)
     {
         // Check if memory is too full
         if (mainMemory.size() == frameCount)
@@ -50,6 +48,6 @@ public class VariableCPU extends CPU
             mainMemory.remove(oldestPage.getKey());
         }
         // Add
-        mainMemory.put(page.getProcessID()+page.getPageID(), page);
+        mainMemory.put(page.getProcessID() + page.getPageID(), page);
     }
 }
