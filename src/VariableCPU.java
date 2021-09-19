@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 public class VariableCPU extends CPU
 {
@@ -34,6 +35,21 @@ public class VariableCPU extends CPU
     @Override
     protected void addToMemory(Page page)
     {
-        
+        // Check if memory is too full
+        if (mainMemory.size() == frameCount)
+        {
+            // Remove if necessary
+            Map.Entry<String, Page> oldestPage = null;
+            for (Map.Entry<String, Page> entry : mainMemory.entrySet())
+            {
+                if (oldestPage == null || entry.getValue().getLastUsed() < oldestPage.getValue().getLastUsed())
+                {
+                    oldestPage = entry;
+                }
+            }
+            mainMemory.remove(oldestPage.getKey());
+        }
+        // Add
+        mainMemory.put(page.getProcessID()+page.getPageID(), page);
     }
 }
