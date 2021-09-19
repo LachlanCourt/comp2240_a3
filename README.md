@@ -1,6 +1,6 @@
 
 # COMP2240 - Operating Systems
-## Assignment 1
+## Assignment 3
 ### Task
 
 Create a program that simulates a CPU running a Round Robin scheduling algorithm that has a memory management system to restrict the number of pages that can exist in memory frames at a given time. For the purposes of the simulation it was assumed that all processes arrived at T=0
