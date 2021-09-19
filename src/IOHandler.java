@@ -5,7 +5,10 @@ public class IOHandler
     private static final int REQUEST_TIME = 6;
     private HashMap<String, HashMap<Integer, Page>> disk;
 
-    public IOHandler() {}
+    public IOHandler()
+    {
+        disk = new HashMap<String, HashMap<Integer, Page>>();
+    }
 
     public void writeToDisk(Page page)
     {

@@ -11,19 +11,23 @@ public class Page
         lastUsed = 0;
     }
 
-    public int getPageID() {
+    public int getPageID()
+    {
         return pageID;
     }
 
-    public void setPage(int page) {
+    public void setPage(int page)
+    {
         this.pageID = page;
     }
 
-    public String getProcessID() {
+    public String getProcessID()
+    {
         return processID;
     }
 
-    public void setProcessID(String processID) {
+    public void setProcessID(String processID)
+    {
         this.processID = processID;
     }
 

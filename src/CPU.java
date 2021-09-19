@@ -86,8 +86,6 @@ public abstract class CPU
                     readyQueue.add(currentProcess);
                 }
             }
-
-
         }
     }
 
@@ -112,6 +110,7 @@ public abstract class CPU
         for (int i = 2; i < args.length; i++)
         {
             ArrayList<Integer> pageSequence = readProcessFile(args[i]);
+            System.out.println(pageSequence.size());
             Process temp = new Process(pageSequence, args[i]);
             readyQueue.add(temp);
             totalProcesses.add(temp);
@@ -137,16 +136,20 @@ public abstract class CPU
         while (input.hasNext())
         {
             String data = input.next();
+
+            // Ignore text
             try
             {
-                Page p = new Page(Integer.valueOf(data), filename);
-                io.writeToDisk(p);
-                pageSequence.add(p.getPageID());
+                Integer.valueOf(data);
             }
             catch (Exception e)
             {
-                // Ignore text
+                continue;
             }
+
+            Page p = new Page(Integer.valueOf(data), filename);
+            io.writeToDisk(p);
+            pageSequence.add(p.getPageID());
         }
         return pageSequence;
     }
