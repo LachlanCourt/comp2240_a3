@@ -1,12 +1,23 @@
+/*******************************************************************************
+ ****    COMP2240 Assignment 3
+ ****    c3308061
+ ****    Lachlan Court
+ ****    19/09/2021
+ ****    This class is the main running class of the simulation. It runs some
+ ****    validation on the command line args, declares a CPU of each type, loads
+ ****    the processes, runs the simulation, and then outputs the result
+ *******************************************************************************/
+
 import java.io.File;
 
 public class A3
 {
     public static void main(String[] args)
     {
+        // If the arguments are not valid then the simulation cannot start
         if (!validArgs(args))
         {
-            System.err.println("Invalid arguments. Usage: <frames:integer> <quantum:integer> <filename:string>+");
+            System.err.println("Invalid arguments. Usage: <frames:integer> <quanta:integer> <filename:string>+");
             System.exit(1);
         }
         A3 a = new A3();
@@ -15,25 +26,30 @@ public class A3
 
     public void run(String[] args)
     {
+        // Declare and run a fixed local CPU
         FixedCPU fixed = new FixedCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]), args.length - 2);
         fixed.readProcesses(args);
         fixed.run();
 
+        // Declare and run a variable global CPU
         VariableCPU variable = new VariableCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
         variable.readProcesses(args);
         variable.run();
 
+        // Output the report from each
         System.out.println(fixed + "\n");
         System.out.println(variable);
     }
 
     private static boolean validArgs(String[] args)
     {
+        // There should be at least 3 arguments - the frame count, the quanta, and at least one process
         if (args.length < 3)
         {
             return false;
         }
 
+        // Each argument that represents a file should point to a file that exists
         for (int i = 2; i < args.length; i++)
         {
             File f = new File(args[i]);
@@ -44,6 +60,7 @@ public class A3
         }
         try
         {
+            // The first two arguments should be integers
             Integer.valueOf(args[0]);
             Integer.valueOf(args[1]);
         }
@@ -51,6 +68,7 @@ public class A3
         {
             return false;
         }
+        // Everything's valid!
         return true;
     }
 }
