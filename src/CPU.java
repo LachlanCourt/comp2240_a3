@@ -27,7 +27,6 @@ public abstract class CPU
 
     public void run()
     {
-        System.out.println(readyQueue.size());
         // Loop until complete
         while (finishedProcesses.size() != totalProcesses.size())
         {
@@ -103,7 +102,6 @@ public abstract class CPU
         for (int i = 2; i < args.length; i++)
         {
             ArrayList<Integer> pageSequence = readProcessFile(args[i]);
-            System.out.println(pageSequence.size());
             Process temp = new Process(pageSequence, args[i]);
             readyQueue.add(temp);
             totalProcesses.add(temp);
@@ -145,5 +143,11 @@ public abstract class CPU
             pageSequence.add(p.getPageID());
         }
         return pageSequence;
+    }
+
+    @Override public String toString()
+    {
+        String out = "";
+        return out;
     }
 }
