@@ -2,45 +2,50 @@ import java.util.ArrayList;
 
 public class Process
 {
-    public enum ProcessState
-    {
-        READY,
-        BLOCKED
-    }
+    public enum ProcessState { READY, BLOCKED }
 
     private ArrayList<Page> pageSequence;
     private ProcessState state;
     private int currentInstruction;
     private ArrayList<Integer> pageFaults;
+    private String processID;
 
 
-    public Process(ArrayList<Page> pageSequence_)
+    public Process(ArrayList<Page> pageSequence_, String processID_)
     {
         pageSequence = pageSequence_;
+        processID = processID_;
         state = ProcessState.READY;
         currentInstruction = 0;
         pageFaults = new ArrayList<Integer>();
     }
 
-    public Page getPage() {
+    public Page getPage()
+    {
         return pageSequence.get(currentInstruction);
     }
 
-    public ProcessState getState() {
+    public ProcessState getState()
+    {
         return state;
     }
 
-    public void setState(ProcessState state_) {
+    public String getProcessID()
+    {
+        return processID;
+    }
+
+    public void setState(ProcessState state_)
+    {
         this.state = state_;
     }
 
-    public void tick() {
-    }
+    public void tick() {}
 
-    public boolean isFinished() {
+    public boolean isFinished()
+    {
         return true;
     }
 
-    public void issueFault(int currentTime) {
-    }
+    public void issueFault(int currentTime) {}
 }

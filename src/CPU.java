@@ -30,7 +30,8 @@ public abstract class CPU
         io = new IOHandler();
         System.out.println(readyQueue.size());
         // Loop until complete
-        while (finishedProcesses.size() != totalProcesses.size()) {
+        while (finishedProcesses.size() != totalProcesses.size())
+        {
             // If all processes are blocked, increment time and tick IO
             while (readyQueue.size() == 0)
             {
@@ -47,11 +48,12 @@ public abstract class CPU
                 // if no, block and pass to IO
                 blockCurrentProcess();
                 io.fetchFromMemory(currentProcess.getPage());
-
             }
-            else {
+            else
+            {
                 // if yes, loop quanta steps
-                for (int i = 0; i < quanta; i++) {
+                for (int i = 0; i < quanta; i++)
+                {
                     //      increment time
                     //      Tick IO
                     //      Move blocked to ready
@@ -73,28 +75,32 @@ public abstract class CPU
                     }
                     //      if yes, continue
                 }
+                // if complete, move between queues
+                // if not, put back on ready queue
+                readyQueue.remove(0);
+                if (currentProcess.isFinished())
+                {
+                    finishedProcesses.add(currentProcess);
+                }
+                else
+                {
+                    readyQueue.add(currentProcess);
+                }
             }
-            // if complete, move between queues
-            // if not, put back on ready queue
-            readyQueue.remove(0);
-            if (currentProcess.isFinished())
-            {
-                finishedProcesses.add(currentProcess);
-            }
-            else
-            {
-                readyQueue.add(currentProcess);
-            }
+
 
         }
     }
 
-    private void blockCurrentProcess() {
+    private void blockCurrentProcess()
+    {
         currentProcess.issueFault(currentTime);
         currentProcess.setState(Process.ProcessState.BLOCKED);
         readyQueue.remove(0);
         blockedQueue.add(currentProcess);
     }
+
+    protected abstract void init();
 
     protected abstract void scanBlockedProcesses();
 
@@ -107,10 +113,11 @@ public abstract class CPU
         for (int i = 2; i < args.length; i++)
         {
             ArrayList<Page> pageSequence = readProcessFile(args[i]);
-            Process temp = new Process(pageSequence);
+            Process temp = new Process(pageSequence, args[i]);
             readyQueue.add(temp);
             totalProcesses.add(temp);
         }
+        init();
     }
 
     private ArrayList<Page> readProcessFile(String filename)

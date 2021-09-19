@@ -1,14 +1,9 @@
 public class IOHandler
 {
     private static final int REQUEST_TIME = 6;
-    public IOHandler()
-    {
+    public IOHandler() {}
 
-    }
+    public void tick() {}
 
-    public void tick() {
-    }
-
-    public void fetchFromMemory(Page page) {
-    }
+    public void fetchFromMemory(Page page) {}
 }
