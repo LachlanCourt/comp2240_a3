@@ -18,8 +18,13 @@ public class A3
         FixedCPU fixed = new FixedCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]), args.length - 2);
         fixed.readProcesses(args);
         fixed.run();
-        // cpu.runVariable();
+
+        VariableCPU variable = new VariableCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]), args.length - 2);
+        variable.readProcesses(args);
+        variable.run();
+
         System.out.println(fixed);
+        System.out.println(variable);
     }
 
     private static boolean validArgs(String[] args)

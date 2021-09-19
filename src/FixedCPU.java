@@ -22,24 +22,6 @@ public class FixedCPU extends CPU
         }
     }
 
-    @Override protected void scanBlockedProcesses()
-    {
-        ArrayList<Process> toMove = new ArrayList<Process>();
-        for (Process p : blockedQueue)
-        {
-            if (checkMemoryForPage(p))
-            {
-                toMove.add(p);
-            }
-        }
-        for (Process p : toMove)
-        {
-            blockedQueue.remove(p);
-            p.setState(Process.ProcessState.READY);
-            readyQueue.add(p);
-        }
-    }
-
     @Override protected boolean checkMemoryForPage(Process p)
     {
         int requiredPage = p.getRequiredPageID();
