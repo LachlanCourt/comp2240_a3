@@ -19,7 +19,7 @@ public class A3
         fixed.readProcesses(args);
         fixed.run();
 
-        VariableCPU variable = new VariableCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]), args.length - 2);
+        VariableCPU variable = new VariableCPU(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
         variable.readProcesses(args);
         variable.run();
 
