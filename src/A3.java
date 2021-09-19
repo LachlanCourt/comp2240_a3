@@ -23,7 +23,7 @@ public class A3
         variable.readProcesses(args);
         variable.run();
 
-        System.out.println(fixed);
+        System.out.println(fixed + "\n");
         System.out.println(variable);
     }
 

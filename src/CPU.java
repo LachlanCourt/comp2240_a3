@@ -176,7 +176,7 @@ public abstract class CPU
             String tt = String.valueOf(p.getFinishTime());
             String f = String.valueOf(p.getTotalFaults());
             String ft = p.getFaults();
-            out += String.format("%-5s%-18s%-17s%-10s%-11s", pid, pname, tt, f, ft) + "\n";
+            out += String.format("%-5s%-18s%-17s%-10s%-1s", pid, pname, tt, f, ft) + "\n";
         }
         return out;
     }
