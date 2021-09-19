@@ -41,6 +41,7 @@ public class IOHandler
         for (Page p : readyPages)
         {
             cpu.addToMemory(p);
+            fetching.remove(p);
         }
     }
 

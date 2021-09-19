@@ -65,7 +65,7 @@ public class FixedCPU extends CPU
                     oldestPage = entry;
                 }
             }
-            mainMemory.get(page.getProcessID()).remove(oldestPage);
+            mainMemory.get(page.getProcessID()).remove(oldestPage.getKey());
         }
         // Add
         mainMemory.get(page.getProcessID()).put(page.getPageID(), page);
