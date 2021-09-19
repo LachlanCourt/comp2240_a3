@@ -1,8 +1,7 @@
-import jdk.jfr.Frequency;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import jdk.jfr.Frequency;
 
 public class IOHandler
 {
@@ -38,7 +37,6 @@ public class IOHandler
             {
                 readyPages.add(entry.getKey());
             }
-
         }
         for (Page p : readyPages)
         {

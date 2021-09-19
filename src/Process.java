@@ -44,7 +44,8 @@ public class Process
         return intID;
     }
 
-    public int getFinishTime() {
+    public int getFinishTime()
+    {
         return finishTime;
     }
 
@@ -56,12 +57,12 @@ public class Process
     public String getFaults()
     {
         String out = "{";
-        //System.out.println(pageFaults.size());
+        // System.out.println(pageFaults.size());
         for (int i : pageFaults)
         {
             out += i + ", ";
         }
-        out = out.substring(0, out.length() - 2); //Remove comma and space
+        out = out.substring(0, out.length() - 2);  // Remove comma and space
         out += "}";
         return out;
     }
@@ -74,7 +75,7 @@ public class Process
     public void tick(int currentTime)
     {
         currentInstruction++;
-        if (currentInstruction == pageSequence.size() - 1)
+        if (currentInstruction == pageSequence.size())
         {
             finishTime = currentTime;
         }

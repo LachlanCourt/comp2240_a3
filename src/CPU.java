@@ -104,7 +104,7 @@ public abstract class CPU
         for (int i = 2; i < args.length; i++)
         {
             ArrayList<Integer> pageSequence = readProcessFile(args[i]);
-            Process temp = new Process(pageSequence, args[i], i - 1);
+            Process temp = new Process(pageSequence, args[i], i - 1); // i - 1 will start at 1, giving a unique ID to each process
             readyQueue.add(temp);
             totalProcesses.add(temp);
         }
@@ -149,19 +149,19 @@ public abstract class CPU
 
     @Override public String toString()
     {
-        String out = "FIFO - " + name + " Replacement:\nPID  Process Name      Turnaround Time  # Faults  Fault Times\n";
-        Collections.sort(finishedProcesses, (Process a, Process b) -> {
-           return a.getIntID() < b.getIntID() ? -1 : 1;
-        });
+        String out =
+            "FIFO - " + name + " Replacement:\nPID  Process Name      Turnaround Time  # Faults  Fault Times\n";
+                Collections.sort(finishedProcesses, (Process a, Process b) -> {
+                   return a.getIntID() < b.getIntID() ? -1 : 1;
+                });
         for (Process p : finishedProcesses)
         {
             String pid = String.valueOf(p.getIntID());
             String pname = p.getProcessID();
             String tt = String.valueOf(p.getFinishTime());
-            String faults = String.valueOf(p.getTotalFaults());
-            String faultTimes = p.getFaults();
-            out += String.format("%-5s%-18s%-17s%-10s%-11s", pid, pname, tt, faults, faultTimes);
-            out += "\n";
+            String f = String.valueOf(p.getTotalFaults());
+            String ft = p.getFaults();
+            out += String.format("%-5s%-18s%-17s%-10s%-11s", pid, pname, tt, f, ft) + "\n";
         }
         return out;
     }

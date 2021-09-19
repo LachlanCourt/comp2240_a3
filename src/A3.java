@@ -34,11 +34,9 @@ public class A3
             File f = new File(args[i]);
             if (!f.exists())
             {
-                System.out.println("a");
                 return false;
             }
         }
-
         try
         {
             Integer.valueOf(args[0]);
