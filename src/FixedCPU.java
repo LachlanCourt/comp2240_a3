@@ -43,16 +43,38 @@ public class FixedCPU extends CPU
     @Override protected boolean checkMemoryForPage(Process p)
     {
         ArrayList<Page> memorySector = mainMemory.get(p.getProcessID());
-        Page requiredPage = p.getPage();
+        int requiredPage = p.getRequiredPageID();
         for (Page pg : memorySector)
         {
-            if (pg == requiredPage)
+            if (pg.getPageID() == requiredPage)
             {
+                pg.updateLastUsed(currentTime);
                 return true;
             }
         }
         return false;
     }
 
-    @Override protected void addToMemory() {}
+    @Override protected void addToMemory(Page page)
+    {
+        // Check if memory is too full
+        if (mainMemory.get(page.getProcessID()).size() == framesPerProcess)
+        {
+            // Remove if necessary
+            int oldestPageIndex = 0;
+            int oldestPageTime = 0;
+            for (int i = 0; i < framesPerProcess; i++)
+            {
+                if (mainMemory.get(page.getProcessID()).get(i).getLastUsed() < oldestPageTime)
+                {
+                    oldestPageIndex = i;
+                    oldestPageTime = mainMemory.get(page.getProcessID()).get(i).getLastUsed();
+                }
+            }
+            mainMemory.get(page.getProcessID()).remove(oldestPageIndex);
+        }
+        // Add
+        mainMemory.get(page.getProcessID()).add(page);
+
+    }
 }

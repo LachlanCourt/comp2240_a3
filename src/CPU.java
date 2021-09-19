@@ -10,9 +10,9 @@ public abstract class CPU
     protected ArrayList<Process> totalProcesses;
     protected ArrayList<Process> finishedProcesses;
     protected int quanta;
+    protected int currentTime;
     private IOHandler io;
     private Process currentProcess;
-    private int currentTime;
 
     public CPU(int quanta_)
     {
@@ -20,14 +20,13 @@ public abstract class CPU
         blockedQueue = new ArrayList<Process>();
         totalProcesses = new ArrayList<Process>();
         finishedProcesses = new ArrayList<Process>();
+        io = new IOHandler();
         quanta = quanta_;
         currentTime = 0;
     }
 
     public void run()
     {
-        // Create IOHandler
-        io = new IOHandler();
         System.out.println(readyQueue.size());
         // Loop until complete
         while (finishedProcesses.size() != totalProcesses.size())
@@ -47,7 +46,7 @@ public abstract class CPU
             {
                 // if no, block and pass to IO
                 blockCurrentProcess();
-                io.fetchFromMemory(currentProcess.getPage());
+                io.fetchFromMemory(currentProcess.getProcessID(), currentProcess.getRequiredPageID());
             }
             else
             {
@@ -70,7 +69,7 @@ public abstract class CPU
                     {
                         // if no, block and pass to IO
                         blockCurrentProcess();
-                        io.fetchFromMemory(currentProcess.getPage());
+                        io.fetchFromMemory(currentProcess.getProcessID(), currentProcess.getRequiredPageID());
                         break;
                     }
                     //      if yes, continue
@@ -106,13 +105,13 @@ public abstract class CPU
 
     protected abstract boolean checkMemoryForPage(Process p);
 
-    protected abstract void addToMemory();
+    protected abstract void addToMemory(Page page);
 
     public void readProcesses(String[] args)
     {
         for (int i = 2; i < args.length; i++)
         {
-            ArrayList<Page> pageSequence = readProcessFile(args[i]);
+            ArrayList<Integer> pageSequence = readProcessFile(args[i]);
             Process temp = new Process(pageSequence, args[i]);
             readyQueue.add(temp);
             totalProcesses.add(temp);
@@ -120,9 +119,9 @@ public abstract class CPU
         init();
     }
 
-    private ArrayList<Page> readProcessFile(String filename)
+    private ArrayList<Integer> readProcessFile(String filename)
     {
-        ArrayList<Page> pageSequence = new ArrayList<Page>();
+        ArrayList<Integer> pageSequence = new ArrayList<Integer>();
 
         Scanner input = null;
         try
@@ -140,7 +139,9 @@ public abstract class CPU
             String data = input.next();
             try
             {
-                pageSequence.add(new Page(Integer.valueOf(data), filename));
+                Page p = new Page(Integer.valueOf(data), filename);
+                io.writeToDisk(p);
+                pageSequence.add(p.getPageID());
             }
             catch (Exception e)
             {

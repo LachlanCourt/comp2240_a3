@@ -4,14 +4,14 @@ public class Process
 {
     public enum ProcessState { READY, BLOCKED }
 
-    private ArrayList<Page> pageSequence;
+    private ArrayList<Integer> pageSequence;
     private ProcessState state;
     private int currentInstruction;
     private ArrayList<Integer> pageFaults;
     private String processID;
 
 
-    public Process(ArrayList<Page> pageSequence_, String processID_)
+    public Process(ArrayList<Integer> pageSequence_, String processID_)
     {
         pageSequence = pageSequence_;
         processID = processID_;
@@ -20,7 +20,7 @@ public class Process
         pageFaults = new ArrayList<Integer>();
     }
 
-    public Page getPage()
+    public int getRequiredPageID()
     {
         return pageSequence.get(currentInstruction);
     }
