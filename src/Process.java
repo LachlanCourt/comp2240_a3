@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Process
 {
-        public enum ProcessState
+    public enum ProcessState
     {
         READY,
         BLOCKED
@@ -11,12 +11,15 @@ public class Process
     private ArrayList<Page> pageSequence;
     private ProcessState state;
     private int currentInstruction;
+    private ArrayList<Integer> pageFaults;
+
 
     public Process(ArrayList<Page> pageSequence_)
     {
         pageSequence = pageSequence_;
         state = ProcessState.READY;
         currentInstruction = 0;
+        pageFaults = new ArrayList<Integer>();
     }
 
     public Page getPage() {
@@ -36,5 +39,8 @@ public class Process
 
     public boolean isFinished() {
         return true;
+    }
+
+    public void issueFault(int currentTime) {
     }
 }

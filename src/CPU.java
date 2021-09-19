@@ -9,7 +9,6 @@ public abstract class CPU
     protected ArrayList<Process> blockedQueue;
     protected ArrayList<Process> totalProcesses;
     protected ArrayList<Process> finishedProcesses;
-    protected ArrayList<Integer> pageFaults;
     protected int quanta;
     private IOHandler io;
     private Process currentProcess;
@@ -21,7 +20,6 @@ public abstract class CPU
         blockedQueue = new ArrayList<Process>();
         totalProcesses = new ArrayList<Process>();
         finishedProcesses = new ArrayList<Process>();
-        pageFaults = new ArrayList<Integer>();
         quanta = quanta_;
         currentTime = 0;
     }
@@ -36,7 +34,6 @@ public abstract class CPU
             // If all processes are blocked, increment time and tick IO
             while (readyQueue.size() == 0)
             {
-                //System.out.println("a");
                 currentTime++;
                 io.tick();
                 scanBlockedProcesses();
@@ -50,6 +47,7 @@ public abstract class CPU
                 // if no, block and pass to IO
                 blockCurrentProcess();
                 io.fetchFromMemory(currentProcess.getPage());
+
             }
             else {
                 // if yes, loop quanta steps
@@ -92,6 +90,7 @@ public abstract class CPU
     }
 
     private void blockCurrentProcess() {
+        currentProcess.issueFault(currentTime);
         currentProcess.setState(Process.ProcessState.BLOCKED);
         readyQueue.remove(0);
         blockedQueue.add(currentProcess);
