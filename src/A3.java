@@ -17,7 +17,8 @@ public class A3
         // If the arguments are not valid then the simulation cannot start
         if (!validArgs(args))
         {
-            System.err.println("Invalid arguments. Usage: <frames:integer> <quanta:integer> <filename:string>+\nWhere frames >= number of files");
+            System.err.println(
+                "Invalid arguments. Usage: <frames:integer> <quanta:integer> <filename:string>+\nWhere frames >= number of files");
             System.exit(1);
         }
         A3 a = new A3();
