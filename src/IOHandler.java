@@ -10,13 +10,14 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class IOHandler
 {
     private static final int REQUEST_TIME = 6;
     private HashMap<String, HashMap<Integer, Page>> disk;
-    private HashMap<Page, Integer> fetching;
+    private LinkedHashMap<Page, Integer> fetching;
     // The io handler is aware of the CPU in order to access the memory
     private CPU cpu;
 
@@ -24,7 +25,7 @@ public class IOHandler
     {
         cpu = cpu_;
         disk = new HashMap<String, HashMap<Integer, Page>>();
-        fetching = new HashMap<Page, Integer>();
+        fetching = new LinkedHashMap<Page, Integer>();
     }
 
     /**
@@ -46,7 +47,7 @@ public class IOHandler
     /**
      * Represents a single timestep through the processing system
      */
-    public void tick()
+    public void tick(int currentTime)
     {
         // Create a new list to store any pages whose io request has been completed and needs to be moved to the ready
         // queue
@@ -65,6 +66,8 @@ public class IOHandler
         // Loop through pages that need to be moved
         for (Page p : readyPages)
         {
+            // If the page is just being loaded in, the last time it was used should be the current time
+            p.updateLastUsed(currentTime);
             // Add the page to the memory of the cpu and remove it from the io request map
             cpu.addToMemory(p);
             fetching.remove(p);
