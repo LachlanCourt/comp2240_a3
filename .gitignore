@@ -1,7 +1,0 @@
-*.pdf
-*.class
-.idea
-out
-*.iml
-format.sh
-src/*.txt
