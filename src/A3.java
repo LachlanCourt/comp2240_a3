@@ -17,7 +17,7 @@ public class A3
         // If the arguments are not valid then the simulation cannot start
         if (!validArgs(args))
         {
-            System.err.println("Invalid arguments. Usage: <frames:integer> <quanta:integer> <filename:string>+");
+            System.err.println("Invalid arguments. Usage: <frames:integer> <quanta:integer> <filename:string>+\nWhere frames >= number of files");
             System.exit(1);
         }
         A3 a = new A3();
@@ -65,6 +65,11 @@ public class A3
             Integer.valueOf(args[1]);
         }
         catch (Exception e)
+        {
+            return false;
+        }
+        // There must be at least one frame per process for fixed-local
+        if (args.length - 2 > Integer.valueOf(args[0]))
         {
             return false;
         }
