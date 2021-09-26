@@ -106,6 +106,26 @@ public abstract class CPU
     protected abstract void clearAssociatedMemory(Process currentProcess);
 
     /**
+     * Initialise the CPU if there are things that need to be done after the processes have been read and cannot run
+     * during the constructor
+     */
+    protected abstract void init();
+
+    /**
+     * Check if the page required for the specified process currently exists in the main memory of the cpu
+     * @param p Process to be assessed
+     * @return indication of whether the process would be able to continue processing
+     */
+    protected abstract boolean checkMemoryForPage(Process p);
+
+    /**
+     * Method to allow the io handler to add a new page into the main memory. Will also handle removing old pages if
+     * the memory is full
+     * @param page to be added to the main memory
+     */
+    protected abstract void addToMemory(Page page);
+
+    /**
      * Handles blocking the current process if waiting for io
      */
     private void blockCurrentProcess()
@@ -143,26 +163,6 @@ public abstract class CPU
             readyQueue.add(p);
         }
     }
-
-    /**
-     * Initialise the CPU if there are things that need to be done after the processes have been read and cannot run
-     * during the constructor
-     */
-    protected abstract void init();
-
-    /**
-     * Check if the page required for the specified process currently exists in the main memory of the cpu
-     * @param p Process to be assessed
-     * @return indication of whether the process would be able to continue processing
-     */
-    protected abstract boolean checkMemoryForPage(Process p);
-
-    /**
-     * Method to allow the io handler to add a new page into the main memory. Will also handle removing old pages if
-     * the memory is full
-     * @param page to be added to the main memory
-     */
-    protected abstract void addToMemory(Page page);
 
     /**
      * Handle the reading of all processes from files and adding the data into relevant queues ready to commence the
