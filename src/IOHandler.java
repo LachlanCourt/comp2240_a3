@@ -10,13 +10,14 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class IOHandler
 {
     private static final int REQUEST_TIME = 6;
     private HashMap<String, HashMap<Integer, Page>> disk;
-    private HashMap<Page, Integer> fetching;
+    private LinkedHashMap<Page, Integer> fetching;
     // The io handler is aware of the CPU in order to access the memory
     private CPU cpu;
 
@@ -24,7 +25,7 @@ public class IOHandler
     {
         cpu = cpu_;
         disk = new HashMap<String, HashMap<Integer, Page>>();
-        fetching = new HashMap<Page, Integer>();
+        fetching = new LinkedHashMap<Page, Integer>();
     }
 
     /**
