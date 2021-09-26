@@ -50,7 +50,7 @@ public abstract class CPU
             while (readyQueue.size() == 0)
             {
                 currentTime++;
-                io.tick();
+                io.tick(currentTime);
                 scanBlockedProcesses();
             }
             // Take first process from ready queue
@@ -69,7 +69,7 @@ public abstract class CPU
                 }
                 // Increment time and tick IO
                 currentTime++;
-                io.tick();
+                io.tick(currentTime);
                 scanBlockedProcesses();
 
                 // Increment the program counter for the current process and if complete, break
