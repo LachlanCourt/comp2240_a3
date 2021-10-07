@@ -38,7 +38,9 @@ public class VariableCPU extends CPU
         // memory fills up
         if (mainMemory.containsKey(p.getProcessID() + requiredPage))
         {
-            mainMemory.get(p.getProcessID() + requiredPage).updateLastUsed(currentTime);
+            // Uncommenting this line will make the CPU run Least Recently Used page replacement policy. This way it is
+            // FIFO as per spec
+            // mainMemory.get(p.getProcessID() + requiredPage).updateLastUsed(currentTime);
             return true;
         }
         // The page does not exist in memory :(
