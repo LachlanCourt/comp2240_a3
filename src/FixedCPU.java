@@ -42,7 +42,9 @@ public class FixedCPU extends CPU
         // memory fills up
         if (mainMemory.get(p.getProcessID()).containsKey(requiredPage))
         {
-            mainMemory.get(p.getProcessID()).get(requiredPage).updateLastUsed(currentTime);
+            // Uncommenting this line will make the CPU run Least Recently Used page replacement policy. This way it is
+            // FIFO as per spec
+            // mainMemory.get(p.getProcessID()).get(requiredPage).updateLastUsed(currentTime);
             return true;
         }
         // The page does not exist in memory :(
